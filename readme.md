@@ -69,8 +69,8 @@ This project is a demonstration of a password generator and a brute-force passwo
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/yptse123/password_gen_and_brute_force.git
+   cd password_gen_and_brute_force
    ```
 
 2. **Install Dependencies**:
@@ -81,7 +81,7 @@ This project is a demonstration of a password generator and a brute-force passwo
 
 3. **Run the Server**:
    ```bash
-   python <script_name>.py
+   python script.py
    ```
    The server will start at `http://127.0.0.1:5000`.
 
