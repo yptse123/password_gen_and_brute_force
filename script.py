@@ -10,10 +10,10 @@ import threading
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+characters = string.ascii_lowercase + string.digits
 
 # Function to generate a random password with a given length
 def generate_password(length):
-    characters = string.ascii_lowercase + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
 
 # API endpoint to generate passwords
@@ -26,14 +26,13 @@ def generate_passwords():
 
 # Function to brute force a password
 def brute_force_crack(password, result_dict, index):
-    characters = string.ascii_letters + string.digits + string.punctuation
     start_time = time.time()
     print(f"Starting brute force for password: {password}")
     for length in range(1, len(password) + 1):
         for attempt in itertools.product(characters, repeat=length):
             if ''.join(attempt) == password:
                 end_time = time.time() - start_time
-                print(f"Password {password} cracked in {end_time:.4f} seconds")
+                print(f"Password {password} cracked in {end_time} seconds")
                 result_dict[index] = end_time
                 return
     result_dict[index] = None

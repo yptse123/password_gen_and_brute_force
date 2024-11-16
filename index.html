@@ -74,7 +74,7 @@
             html += '<table><tr><th>Length</th><th>Password</th><th>Time Taken (s)</th></tr>';
             for (let length in crackTimes) {
                 crackTimes[length].forEach(entry => {
-                    html += `<tr><td>${length}</td><td>${entry.password}</td><td>${entry.time.toFixed(4)}</td></tr>`;
+                    html += `<tr><td>${length}</td><td>${entry.password}</td><td>${entry.time}</td></tr>`;
                 });
             }
             html += '</table>';
