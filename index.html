@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Cracking Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Password Cracking Demo</h1>
+    <button onclick="startProcess()">Start</button>
+    <div id="results"></div>
+    <canvas id="crackTimeChart" width="400" height="200"></canvas>
+
+    <script>
+        async function startProcess() {
+            // Step 1: Generate passwords
+            let response = await fetch('http://127.0.0.1:5000/generate_passwords');
+            let passwords = await response.json();
+            displayGeneratedPasswords(passwords);
+
+            // Step 2: Crack passwords
+            response = await fetch('http://127.0.0.1:5000/crack_passwords', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ passwords: passwords })
+            });
+            let crackTimes = await response.json();
+            displayCrackTimes(crackTimes);
+
+            // Step 3: Calculate average times and plot graphs
+            plotAverageCrackTimes(crackTimes);
+        }
+
+        function displayGeneratedPasswords(passwords) {
+            let resultDiv = document.getElementById('results');
+            let html = '<h2>Generated Passwords</h2>';
+            html += '<table><tr><th>Length</th><th>Passwords</th></tr>';
+            for (let length in passwords) {
+                if (passwords.hasOwnProperty(length)) {
+                    html += `<tr><td>${length}</td><td>${passwords[length].join(', ')}</td></tr>`;
+                }
+            }
+            html += '</table>';
+            resultDiv.innerHTML = html;
+        }
+
+
+        function displayCrackTimes(crackTimes) {
+            let resultDiv = document.getElementById('results');
+            let html = '<h2>Crack Times</h2>';
+            html += '<table><tr><th>Length</th><th>Password</th><th>Time Taken (s)</th></tr>';
+            for (let length in crackTimes) {
+                crackTimes[length].forEach(entry => {
+                    html += `<tr><td>${length}</td><td>${entry.password}</td><td>${entry.time.toFixed(4)}</td></tr>`;
+                });
+            }
+            html += '</table>';
+            resultDiv.innerHTML += html;
+        }
+
+        function plotAverageCrackTimes(crackTimes) {
+            let avgTimes = [];
+            let labels = [];
+            for (let length in crackTimes) {
+                let times = crackTimes[length].map(entry => entry.time);
+                let avgTime = times.reduce((a, b) => a + b, 0) / times.length;
+                avgTimes.push(avgTime);
+                labels.push(`Length ${length}`);
+            }
+
+            // Plotting the graph using Chart.js
+            var ctx = document.getElementById('crackTimeChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Average Crack Time (s)',
+                        data: avgTimes,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            type: 'logarithmic',
+                            title: {
+                                display: true,
+                                text: 'Time (s, log scale)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Password Length'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
