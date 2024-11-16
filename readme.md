@@ -4,7 +4,7 @@ This project is a demonstration of a password generator and a brute-force passwo
 
 ## Features
 
-1. **Password Generator**: Generates random passwords of lengths ranging from 1 to 6 characters.
+1. **Password Generator**: Generates random passwords of lengths ranging from 1 to 6 characters using numbers and lowercase characters only.
 2. **Brute Force Cracking**: Uses multithreading to efficiently crack passwords by attempting all possible combinations of characters.
 3. **REST API**: Provides two endpoints to generate passwords and crack them using a brute-force method.
 
@@ -21,13 +21,13 @@ This project is a demonstration of a password generator and a brute-force passwo
 
 **URL**: `/generate_passwords`  
 **Method**: `GET`  
-**Description**: Generates random passwords of lengths from 1 to 6, with 10 passwords per length.
+**Description**: Generates random passwords of lengths from 1 to 6, with 10 passwords per length. Only lowercase letters and numbers are used.
 
 **Response**:
 ```json
 {
-  "1": ["k", "C", "<", "H", "b", "t", "'", ")", "y", "1"],
-  "2": ["<s", "bW", "XB", ...],
+  "1": ["k", "b", "t", "y", "1", "3", "a", "e", "g", "z"],
+  "2": ["ab", "1m", "z3", ...],
   ...
 }
 ```
@@ -42,8 +42,8 @@ This project is a demonstration of a password generator and a brute-force passwo
 ```json
 {
   "passwords": {
-    "1": ["k", "C", "<", ...],
-    "2": ["<s", "bW", "XB", ...],
+    "1": ["k", "b", "t", ...],
+    "2": ["ab", "1m", "z3", ...],
     ...
   }
 }
@@ -54,11 +54,11 @@ This project is a demonstration of a password generator and a brute-force passwo
 {
   "1": [
     {"password": "k", "time": 0.0012},
-    {"password": "C", "time": 0.0010},
+    {"password": "b", "time": 0.0010},
     ...
   ],
   "2": [
-    {"password": "<s", "time": 0.0054},
+    {"password": "ab", "time": 0.0054},
     ...
   ],
   ...
@@ -67,21 +67,21 @@ This project is a demonstration of a password generator and a brute-force passwo
 
 ## Running the Application
 
-1. **Clone the Repository**:
+1. **Clone the Repository**: 
    ```bash
    git clone https://github.com/yptse123/password_gen_and_brute_force.git
    cd password_gen_and_brute_force
    ```
 
-2. **Install Dependencies**:
+2. **Install Dependencies**: 
    Make sure you have Python installed. Install the required packages:
    ```bash
    pip install flask flask-cors
    ```
 
-3. **Run the Server**:
+3. **Run the Server**: 
    ```bash
-   python script.py
+   python <script_name>.py
    ```
    The server will start at `http://127.0.0.1:5000`.
 

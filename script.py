@@ -13,7 +13,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Function to generate a random password with a given length
 def generate_password(length):
-    characters = string.ascii_letters + string.digits + string.punctuation
+    characters = string.ascii_lowercase + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
 
 # API endpoint to generate passwords
