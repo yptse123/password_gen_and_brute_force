@@ -7,6 +7,7 @@ import itertools
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import threading
+import multiprocessing
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -43,6 +44,8 @@ def crack_passwords():
     passwords = request.json.get('passwords', {})
     crack_times = {}
     threads = []
+    # as threads amount will affect the accuracy, we limit the amount of threads
+    max_threads = multiprocessing.cpu_count()
     result_dict = {}
     
     for length, pw_list in passwords.items():
@@ -50,6 +53,8 @@ def crack_passwords():
         crack_times[length] = []
         for i, password in enumerate(pw_list):
             print(f"Attempting to crack password of length {length}: {password}")
+            while threading.active_count() > max_threads:
+                time.sleep(0.1)
             thread = threading.Thread(target=brute_force_crack, args=(password, result_dict, f"{length}_{i}"))
             threads.append(thread)
             thread.start()
