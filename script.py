@@ -54,7 +54,7 @@ def crack_passwords():
         for i, password in enumerate(pw_list):
             print(f"Attempting to crack password of length {length}: {password}")
             while threading.active_count() > max_threads:
-                time.sleep(0.1)
+                time.sleep(0.5)
             thread = threading.Thread(target=brute_force_crack, args=(password, result_dict, f"{length}_{i}"))
             threads.append(thread)
             thread.start()
