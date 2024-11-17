@@ -81,7 +81,7 @@ This project is a demonstration of a password generator and a brute-force passwo
 
 3. **Run the Server**: 
    ```bash
-   python <script_name>.py
+   python script.py
    ```
    The server will start at `http://127.0.0.1:5000`.
 
